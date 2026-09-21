@@ -1,0 +1,120 @@
+{
+  "name": "Email Assistant Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -560,
+        0
+      ],
+      "id": "45f539a1-16f3-48a7-9912-3b577c043543",
+      "name": "Gmail Trigger",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "= Summarize this email and suggest a short reply:\n Subject:{{ $json.Subject }}\n From: {{ $json.From }} \n Body: {{ $json.snippet }}",
+        "options": {
+          "systemMessage": "You are an email assistant. Read the email and:\n1. Give a 2-line summary\n2. Suggest a polite, short reply\nKeep your response structured and clear."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -352,
+        0
+      ],
+      "id": "903ace39-8825-41ca-8dd6-7e5dae3bcc41",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -496,
+        208
+      ],
+      "id": "bfa4ef8b-ce37-4689-bc60-b619cc2f26d7",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_DESTINATION_EMAIL_HERE",
+        "subject": "=Summary:{{ $('Gmail Trigger').item.json.Subject }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e4d568ef-a89d-4b18-873f-de36bfad5c52",
+      "name": "Send a message",
+      "webhookId": "93fbd282-98ff-4dc9-a782-776b4e41fed3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "nodeGroups": [],
+  "tags": []
+}
