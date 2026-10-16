@@ -1,0 +1,188 @@
+{
+  "name": "Monthly Expense Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -288,
+        -16
+      ],
+      "id": "fd057ad2-5266-4273-812f-097bb4b8396b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT category, SUM(amount) as total, COUNT(*) as count\nFROM expenses\nGROUP BY category\nORDER BY total DESC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -80,
+        -16
+      ],
+      "id": "c2af3357-76dd-4c70-8093-65d3f2d15fa1",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "dEfvb32JKUb1EsnA",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Based on this spending data: {{ JSON.stringify($input.all().map(item => item.json)) }}\nWrite a friendly monthly spending summary. Highlight the top category, \ntotal spent, and one practical money-saving tip based on the pattern.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        128,
+        -16
+      ],
+      "id": "a8c80243-641b-47bf-9579-5ea2044f8fcf",
+      "name": "AI Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        176
+      ],
+      "id": "1ac8e2f9-a8f0-49aa-905e-fc824c1ba3aa",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Cv4leF7c3bDmOTEO",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "artificialintelligence2005s@gmail.com",
+        "subject": "Your Monthly Spending Report:",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        -16
+      ],
+      "id": "39600e16-4c00-481e-b1a4-2caa400fd187",
+      "name": "Send a message",
+      "webhookId": "ce674b30-570d-4e4c-8e0e-bf4b29c09c76",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pEES4Lmv2YpokZ0N",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://quickchart.io/chart?c={type:'pie',data:{labels:[...],datasets:[{data:[...]}]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        288,
+        192
+      ],
+      "id": "a097630d-88bb-4169-922d-7644e66dbf14",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "fe1d4bf2-9d56-466d-9f4c-b9b24b9539cd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "777bcad8c4a688428e404cfb849feea8a08f885bdc18f30ad160c07f0def21de"
+  },
+  "nodeGroups": [],
+  "id": "6sYlmMNQnClRYbuw",
+  "tags": []
+}
