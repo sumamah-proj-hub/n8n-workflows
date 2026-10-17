@@ -23,7 +23,7 @@
       ],
       "id": "c2c9c690-d35f-4d6a-99b3-9bce6f3ffdbe",
       "name": "On form submission",
-      "webhookId": "1174b421-4075-48de-9303-612b77cfecef"
+      "webhookId": ""
     },
     {
       "parameters": {
@@ -48,12 +48,7 @@
       ],
       "id": "9e75cfbb-a5a0-47a8-9fcf-258ae41dc24e",
       "name": "Analyze an image",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Cv4leF7c3bDmOTEO",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -159,12 +154,7 @@
       ],
       "id": "5696f76d-37a4-4f52-8610-faf7ac671a29",
       "name": "Insert rows in a table",
-      "credentials": {
-        "postgres": {
-          "id": "dEfvb32JKUb1EsnA",
-          "name": "Postgres account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -216,16 +206,16 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "e610caa9-5400-4da9-ac56-e469d4476290",
+  "versionId": "",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "777bcad8c4a688428e404cfb849feea8a08f885bdc18f30ad160c07f0def21de"
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
   },
   "nodeGroups": [],
   "id": "yjcmeiQaQjv4HWRS",
