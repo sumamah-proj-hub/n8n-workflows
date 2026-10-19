@@ -32,12 +32,7 @@
       ],
       "id": "c2af3357-76dd-4c70-8093-65d3f2d15fa1",
       "name": "Execute a SQL query",
-      "credentials": {
-        "postgres": {
-          "id": "dEfvb32JKUb1EsnA",
-          "name": "Postgres account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -67,12 +62,7 @@
       ],
       "id": "1ac8e2f9-a8f0-49aa-905e-fc824c1ba3aa",
       "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Cv4leF7c3bDmOTEO",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -90,13 +80,8 @@
       ],
       "id": "39600e16-4c00-481e-b1a4-2caa400fd187",
       "name": "Send a message",
-      "webhookId": "ce674b30-570d-4e4c-8e0e-bf4b29c09c76",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "pEES4Lmv2YpokZ0N",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "",
+      "credentials": {}
     },
     {
       "parameters": {
@@ -163,7 +148,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "HTTP Request",
             "type": "ai_tool",
             "index": 0
           }
@@ -171,16 +156,16 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "fe1d4bf2-9d56-466d-9f4c-b9b24b9539cd",
+  "versionId": "",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "777bcad8c4a688428e404cfb849feea8a08f885bdc18f30ad160c07f0def21de"
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
   },
   "nodeGroups": [],
   "id": "6sYlmMNQnClRYbuw",
